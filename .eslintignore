@@ -1,0 +1,9 @@
+node_modules
+build
+public/build
+shopify-app-remix
+*/*.yml
+.shopify
+extensions/*/dist
+prisma/migrations
+extensions/gift-banner/assets/gift-banner.js

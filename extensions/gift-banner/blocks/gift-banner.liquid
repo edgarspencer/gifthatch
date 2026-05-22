@@ -1,0 +1,134 @@
+{% comment %}
+  gifthatch — gift banner + auto-add behaviour.
+
+  Reads rule config from the embedding block settings. The merchant sets one
+  block per rule from the theme editor (gifthatch admin can ship preset
+  configs but the source of truth at runtime is what's in the theme).
+
+  The companion JS in assets/gift-banner.js handles cart polling, threshold
+  evaluation, and the /cart/add.js call.
+
+  Rendered inside the cart drawer / cart page only.
+{% endcomment %}
+
+{%- if block.settings.gift_variant_id != blank
+    and block.settings.threshold > 0 -%}
+
+  <div
+    class="gifthatch-banner"
+    data-gifthatch-rule
+    data-rule-id="{{ block.settings.rule_id | escape }}"
+    data-threshold-cents="{{ block.settings.threshold | times: 100 | round: 0 }}"
+    data-gift-variant-id="{{ block.settings.gift_variant_id | escape }}"
+    data-banner-text="{{ block.settings.banner_text | escape }}"
+    data-progress-text="{{ block.settings.progress_text | escape }}"
+    style="display:none;
+           padding: {{ block.settings.padding }}px;
+           background: {{ block.settings.background }};
+           color: {{ block.settings.text_color }};
+           border-radius: 8px;
+           font: inherit;
+           line-height: 1.4;"
+    {{ block.shopify_attributes }}
+  >
+    <span data-gifthatch-message></span>
+    <div
+      data-gifthatch-progress
+      style="height: 4px;
+             background: rgba(0,0,0,0.1);
+             border-radius: 999px;
+             margin-top: 8px;
+             overflow: hidden;"
+    >
+      <div
+        data-gifthatch-progress-bar
+        style="height: 100%;
+               width: 0%;
+               background: {{ block.settings.progress_color }};
+               transition: width 200ms ease-out;"
+      ></div>
+    </div>
+  </div>
+
+  <script src="{{ 'gift-banner.js' | asset_url }}" defer></script>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Gifthatch banner",
+  "target": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Rule"
+    },
+    {
+      "type": "text",
+      "id": "rule_id",
+      "label": "Rule ID (from the gifthatch admin)",
+      "info": "Used to tag the cart line so the discount function can find it."
+    },
+    {
+      "type": "number",
+      "id": "threshold",
+      "label": "Threshold (cart total)",
+      "default": 50
+    },
+    {
+      "type": "text",
+      "id": "gift_variant_id",
+      "label": "Gift variant ID",
+      "info": "Numeric variant ID (e.g. 41234567890123), not the gid."
+    },
+    {
+      "type": "header",
+      "content": "Copy"
+    },
+    {
+      "type": "text",
+      "id": "banner_text",
+      "label": "Unlocked text",
+      "default": "🎁 Free gift unlocked"
+    },
+    {
+      "type": "text",
+      "id": "progress_text",
+      "label": "Progress text",
+      "default": "Add {amount_left} more to unlock a free gift",
+      "info": "Use {amount_left} as a placeholder for the remaining amount."
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#FFF7E6"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#1F1F1F"
+    },
+    {
+      "type": "color",
+      "id": "progress_color",
+      "label": "Progress bar",
+      "default": "#1F1F1F"
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Padding (px)",
+      "min": 4,
+      "max": 32,
+      "step": 2,
+      "default": 12
+    }
+  ]
+}
+{% endschema %}

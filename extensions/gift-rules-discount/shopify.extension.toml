@@ -1,0 +1,15 @@
+api_version = "2025-01"
+
+[[extensions]]
+name = "Gift rules discount"
+handle = "gift-rules-discount"
+type = "function"
+
+[[extensions.targeting]]
+target = "cart.lines.discounts.generate.run"
+input_query = "src/cart_lines_discounts_generate_run.graphql"
+export = "cart-lines-discounts-generate-run"
+
+[extensions.build]
+command = "npm run build"
+path = "dist/function.wasm"

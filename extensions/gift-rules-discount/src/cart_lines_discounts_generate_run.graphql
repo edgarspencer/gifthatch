@@ -1,0 +1,30 @@
+query RunInput {
+  cart {
+    cost {
+      subtotalAmount {
+        amount
+        currencyCode
+      }
+    }
+    lines {
+      id
+      quantity
+      cost {
+        subtotalAmount {
+          amount
+          currencyCode
+        }
+      }
+      ruleIdAttr: attribute(key: "_gh_rule_id") {
+        value
+      }
+      thresholdAttr: attribute(key: "_gh_threshold_cents") {
+        value
+      }
+    }
+  }
+  discount {
+    discountClasses
+  }
+  presentmentCurrencyRate
+}
