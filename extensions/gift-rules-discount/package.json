@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@shopify/shopify_function": "2.0.1",
-    "javy-cli": "0.1.8",
+    "javy-cli": "3.0.1",
     "typescript": "^5.5.0",
     "vitest": "^2.1.0"
   }
