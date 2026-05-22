@@ -33,7 +33,7 @@ export function formatMoney(cents: number, currencyCode = "GBP", locale = "en-GB
 }
 
 export function parseMoneyInput(value: string, currencyCode = "GBP"): number | null {
-  const cleaned = value.replace(/[^0-9.,\-]/g, "").replace(",", ".");
+  const cleaned = value.replace(/[^0-9.,-]/g, "").replace(",", ".");
   if (cleaned === "" || cleaned === "-") return null;
   const parsed = Number(cleaned);
   if (Number.isNaN(parsed)) return null;
